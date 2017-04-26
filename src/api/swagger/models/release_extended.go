@@ -28,6 +28,12 @@ type ReleaseExtended struct {
 	*/
 	ChartVersion *string `json:"chartVersion"`
 
+	/* manifest
+
+	Required: true
+	*/
+	Manifest *string `json:"manifest"`
+
 	/* name
 
 	Required: true
@@ -75,6 +81,11 @@ func (m *ReleaseExtended) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateChartVersion(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateManifest(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -127,6 +138,15 @@ func (m *ReleaseExtended) validateChartName(formats strfmt.Registry) error {
 func (m *ReleaseExtended) validateChartVersion(formats strfmt.Registry) error {
 
 	if err := validate.Required("chartVersion", "body", m.ChartVersion); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ReleaseExtended) validateManifest(formats strfmt.Registry) error {
+
+	if err := validate.Required("manifest", "body", m.Manifest); err != nil {
 		return err
 	}
 

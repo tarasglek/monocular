@@ -545,6 +545,7 @@ definitions:
       - namespace
       - resources
       - notes
+      - manifest
     properties:
       name:
         type: string
@@ -563,4 +564,6 @@ definitions:
       resources:
         type: string
       notes:
+        type: string
+      manifest:
         type: string

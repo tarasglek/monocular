@@ -149,6 +149,7 @@ func makeReleaseExtendedResource(release *hapi_release5.Release) *models.Resourc
 		Status:       helpers.StrToPtr(release.Info.Status.Code.String()),
 		Resources:    helpers.StrToPtr(release.Info.Status.Resources),
 		Notes:        helpers.StrToPtr(release.Info.Status.Notes),
+		Manifest:     &release.Manifest,
 	}
 	return &ret
 }

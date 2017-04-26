@@ -25,7 +25,6 @@ spec:
           serviceName: {{ template "fullname" $ }}-api
           servicePort: {{ $.Values.api.service.externalPort }}
         path: /api/
-    host: {{ . | quote }}
   {{- end }}
 {{- if .Values.ingress.tls }}
   tls:

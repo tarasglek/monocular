@@ -64,6 +64,9 @@ func GetConfig() (Configuration, error) {
 
 	currentConfig.Initialized = true
 
+	currentConfig.ReleasesEnabled = true
+	currentConfig.TillerPortForward = true
+
 	log.Info("Configuration bootstrap finished")
 	return currentConfig, nil
 }

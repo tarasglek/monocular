@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 api:
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: gcr.io/helm-ui/monocular-api
     tag: latest
@@ -41,11 +41,11 @@ api:
         - "access-control-allow-headers"
         - "x-xsrf-token"
     # Enable Helm deployment integration
-    releasesEnabled: false
+    releasesEnabled: true
     # Cache refresh interval in sec.
     cacheRefreshInterval: 3600
 ui:
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: gcr.io/helm-ui/monocular-ui
     tag: latest
@@ -65,7 +65,7 @@ ui:
   # ui-config populate
   googleAnalyticsId: UA-XXXXXX-X
   appName: Monocular
-  # backendHostname: http://monocular-api.local
+  backendHostname: http://localhost:8080
 
 prerender:
   replicaCount: 1
@@ -93,7 +93,7 @@ ingress:
   ## Ingress annotations
   ##
   annotations:
-  #   kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: nginx
   #   kubernetes.io/tls-acme: 'true'
 
   ## Ingress TLS configuration

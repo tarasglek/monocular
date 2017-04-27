@@ -13,4 +13,6 @@ class DeploymentAttributes {
   updated: Date;
   notes: string;
   resources: string;
+  manifest: any;
+  urls: string[];
 }

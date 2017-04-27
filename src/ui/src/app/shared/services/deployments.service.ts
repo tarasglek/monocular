@@ -6,8 +6,40 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/find';
 import 'rxjs/add/operator/map';
+var jsyaml = require('js-yaml')
 
 import { Http, Response } from '@angular/http';
+
+function svc2urls(doc, ret) {
+  var name = null
+  var spec = doc.spec
+  if (!doc.spec)
+    return
+
+  var nodeIP = "fs66-b-app"
+  var ip = nodeIP
+  var extIP = spec.externalIPs
+  for (var port of spec.ports) {
+    var nodePort = port.nodePort
+    if (nodePort) {
+      ret.push(`http://${nodeIP}:${nodePort}`)
+    }
+    if (extIP) {
+      ret.push(`http://${extIP}:${port.port}`)
+    }
+  }
+}
+
+function yaml2urls(yamlStr) {
+  var ret = []
+  var name = null
+  jsyaml.safeLoadAll(yamlStr, function (doc) {
+    if (doc.kind != "Service")
+      return
+    svc2urls(doc, ret)
+  })
+  return ret
+}
 
 /* TODO, This is a mocked class. */
 @Injectable()
@@ -50,7 +82,20 @@ export class DeploymentsService {
 
   private extractData(res: Response, fallback = {}) {
     let body = res.json();
-    return body.data || fallback;
+    var data = body.data
+    if (!data) {
+        return fallback
+    }
+    var attributes = data.attributes
+    if (attributes) {
+      var manifest = attributes.manifest
+      if (manifest) {
+        console.log(manifest)
+        attributes.urls = yaml2urls(manifest)
+      }
+      console.log(data)
+    }
+    return data || fallback;
   }
 
   private handleError (error: any) {

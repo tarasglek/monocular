@@ -44,18 +44,22 @@ var ipRE = /^\d+\.\d+\.\d+\.\d+$/
 
 var NODE_IP = "10.19.66.145"
 
-function txt_svc2urls(port, ret) {
+function txt_svc2urls(portSpec, ret) {
   var EXT_IP = "EXTERNAL-IP"
-  var match = portsRE.exec(port['PORT(S)'])
-  if (match) {
-    if (match[1]) { // if the form is INTERN_PORT:EXT_PORT/TCP
-      ret.push("http://" + NODE_IP + ":" + match[2])
-    } else if (ipRE.exec(port[EXT_IP])) {
-      ret.push("http://" + port[EXT_IP] + ":" + match[2])
+  var ports = portSpec['PORT(S)'].split(",")
+  ports.forEach(port => {
+    var match = portsRE.exec(port)
+    if (match) {
+      if (match[1]) { // if the form is INTERN_PORT:EXT_PORT/TCP
+        var protocol = match[1] == '443:' ? 'https' : 'http'
+        ret.push(`${protocol}://${NODE_IP}:${match[2]}`)
+      } else if (ipRE.exec(portSpec[EXT_IP])) {
+        ret.push("http://" + portSpec[EXT_IP] + ":" + match[2])
+      }
+    } else {
+      console.error("Can't parse", port)
     }
-  } else {
-    console.log(port['PORT(S)'])
-  }
+  })
 }
 
 function resources_2_urls(str, ret) {

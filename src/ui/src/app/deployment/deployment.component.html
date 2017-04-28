@@ -41,7 +41,8 @@
             </md-list-item><md-list-item>
               <md-icon md-list-avatar svgIcon="info-outline"></md-icon>
               <h4 md-line>URL</h4>
-              <p md-line>{{ deployment.attributes.urls }}</p>
+              <p md-line><a *ngFor="let contact of deployment.attributes.urls" href="{{contact}}" target="_blank"> {{contact}}
+</a></p>
             </md-list-item>
             <md-list-item>
               <md-icon md-list-avatar svgIcon="schedule"></md-icon>

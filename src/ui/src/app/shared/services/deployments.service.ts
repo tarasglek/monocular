@@ -62,23 +62,29 @@ function txt_svc2urls(portSpec, ret) {
   })
 }
 
-function resources_2_urls(str, ret) {
+function parseResources(str) {
   var ls = str.split("==> ")
+  var ret = {}
   ls.forEach(x => {
-    var details = x.split('\n')
-    if (details.shift() != 'v1/Service')
+    var lines = x.split('\n')
+    var name = lines.shift()
+    var header = lines.shift()
+    var values = []
+    if (!header)
       return
-    var header = details.shift().split(/ +/)
+    header = header.split(/ +/)
     var data = null
-    while (data = details.shift()) {
+    while (data = lines.shift()) {
       data = data.split(/ +/)
       var parsed = {}
       for (var i = 0; i < header.length; i++) {
         parsed[header[i]] = data[i]
       }
-      txt_svc2urls(parsed, ret)
+      values.push(parsed)
     }
+    ret[name] = values
   })
+  return ret
 }
 
 /* TODO, This is a mocked class. */
@@ -130,8 +136,13 @@ export class DeploymentsService {
     if (attributes) {
       attributes.urls = []
       var resources = attributes.resources
-      if (resources)
-        resources_2_urls(resources, attributes.urls)
+      if (resources) {
+        var parsedResources = parseResources(resources)
+        var svc = parsedResources['v1/Service']
+        if (svc) {
+          svc.forEach(x => txt_svc2urls(x, attributes.urls))
+        }
+      }
     }
     return data || fallback;
   }

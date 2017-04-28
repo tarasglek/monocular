@@ -30,15 +30,51 @@ function svc2urls(doc, ret) {
   }
 }
 
-function yaml2urls(yamlStr) {
-  var ret = []
+function yaml2urls(yamlStr, ret) {
   var name = null
   jsyaml.safeLoadAll(yamlStr, function (doc) {
     if (doc.kind != "Service")
       return
     svc2urls(doc, ret)
   })
-  return ret
+}
+
+var portsRE = /^(\d+:)?(\d+)\/TCP$/
+var ipRE = /^\d+\.\d+\.\d+\.\d+$/
+
+var NODE_IP = "10.19.66.145"
+
+function txt_svc2urls(port, ret) {
+  var EXT_IP = "EXTERNAL-IP"
+  var match = portsRE.exec(port['PORT(S)'])
+  if (match) {
+    if (match[1]) { // if the form is INTERN_PORT:EXT_PORT/TCP
+      ret.push("http://" + NODE_IP + ":" + match[2])
+    } else if (ipRE.exec(port[EXT_IP])) {
+      ret.push("http://" + port[EXT_IP] + ":" + match[2])
+    }
+  } else {
+    console.log(port['PORT(S)'])
+  }
+}
+
+function resources_2_urls(str, ret) {
+  var ls = str.split("==> ")
+  ls.forEach(x => {
+    var details = x.split('\n')
+    if (details.shift() != 'v1/Service')
+      return
+    var header = details.shift().split(/ +/)
+    var data = null
+    while (data = details.shift()) {
+      data = data.split(/ +/)
+      var parsed = {}
+      for (var i = 0; i < header.length; i++) {
+        parsed[header[i]] = data[i]
+      }
+      txt_svc2urls(parsed, ret)
+    }
+  })
 }
 
 /* TODO, This is a mocked class. */
@@ -88,12 +124,10 @@ export class DeploymentsService {
     }
     var attributes = data.attributes
     if (attributes) {
-      var manifest = attributes.manifest
-      if (manifest) {
-        console.log(manifest)
-        attributes.urls = yaml2urls(manifest)
-      }
-      console.log(data)
+      attributes.urls = []
+      var resources = attributes.resources
+      if (resources)
+        resources_2_urls(resources, attributes.urls)
     }
     return data || fallback;
   }

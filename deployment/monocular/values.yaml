@@ -37,6 +37,7 @@ api:
     cors:
       allowed_origins:
         - my-api-server
+        - '*'
       allowed_headers:
         - "access-control-allow-headers"
         - "x-xsrf-token"

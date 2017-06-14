@@ -39,6 +39,8 @@ spec:
             mountPath: /monocular
           - name: config
             mountPath: /monocular/config
+          - name: kube-config
+            mountPath: /root/.kube
         resources:
 {{ toYaml .Values.api.resources | indent 12 }}
       volumes:
@@ -47,3 +49,7 @@ spec:
           name: {{ template "fullname" . }}-api-config
       - name: cache
         emptyDir: {}
+      # hardcode this for now
+      - name: kube-config
+        secret:
+          secretName: kube-config

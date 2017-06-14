@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # $IMAGE_TAG Required:
-: ${API_IMAGE:="gcr.io/helm-ui/monocular-api"}
-: ${UI_IMAGE:="gcr.io/helm-ui/monocular-ui"}
+: ${API_IMAGE:="tarasglek/monocular-api"}
+: ${UI_IMAGE:="tarasglek/monocular-ui"}
 
 # Helm settings
 : ${SKIP_UPGRADE_CONFIRMATION:="false"}

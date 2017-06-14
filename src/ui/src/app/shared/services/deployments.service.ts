@@ -91,7 +91,7 @@ export class DeploymentsService {
       // only look at services with valid external IP
       if (!ipRE.exec(extIP))
         // workaround for kubernetes not assigning ext ip in dev scenario
-        extIP = "10.19.66.145";
+        extIP = window.location.hostname;
       var portMatch = portsRE.exec(port);
       if (portMatch) {
         var protocol = portMatch[1] == '443:' ? 'https' : 'http';

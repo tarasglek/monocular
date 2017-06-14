@@ -9,6 +9,7 @@ spec:
   ports:
   - port: {{ .Values.ui.service.externalPort }}
     targetPort: {{ .Values.ui.service.internalPort }}
+    nodePort: 31984
     protocol: TCP
     name: {{ .Values.ui.service.name }}
   selector:

@@ -8,18 +8,18 @@ services:
       - 4200:4200
     volumes:
       - ./src/ui:/app
-    command: "ng build --output-path rootfs/dist && echo done"
-    # command: "ng serve --host 0.0.0.0"
-  # api:
-  #   tty: true
-  #   build: ./dev_env/api
-  #   ports:
-  #     - 8080:8080
-  #   volumes:
-  #     - ./src/api:/go/src/github.com/helm/monocular/src/api
-  #     # Config example file
-  #     - ./docs/config.example.yaml:/root/monocular/config/monocular.yaml
-  #     # Used for loading kubernetes context used on Helm releases integration
-  #     - $HOME/.kube/:/root/.kube
-  #   environment:
-  #     - ENVIRONMENT=development
+    # command: "ng build --output-path rootfs/dist && echo done"
+    command: "ng serve --host 0.0.0.0"
+  api:
+    tty: true
+    build: ./dev_env/api
+    ports:
+      - 31983:8080
+    volumes:
+      - ./src/api:/go/src/github.com/helm/monocular/src/api
+      # Config example file
+      - ./docs/config.example.yaml:/root/monocular/config/monocular.yaml
+      # Used for loading kubernetes context used on Helm releases integration
+      - $HOME/.kube/:/root/.kube
+    environment:
+      - ENVIRONMENT=development

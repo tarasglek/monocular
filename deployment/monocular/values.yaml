@@ -27,20 +27,19 @@ api:
       - name: stable
         url: http://storage.googleapis.com/kubernetes-charts
         source: https://github.com/kubernetes/charts/tree/master/stable
-      - name: incubator
-        url: http://storage.googleapis.com/kubernetes-charts-incubator
-        source: https://github.com/kubernetes/charts/tree/master/incubator
+      # - name: incubator
+      #   url: http://storage.googleapis.com/kubernetes-charts-incubator
+      #   source: https://github.com/kubernetes/charts/tree/master/incubator
       # Add your own repository
       - name: purestorage.com
-        url: http://dev-taras:8000
-        source: http://dev-taras:8000
+        url: http://purestorage-helm.glek.net:8000
+        source: http://purestorage-helm.glek.net:8000
     cors:
       allowed_origins:
         - my-api-server
         - '*'
       allowed_headers:
-        - "access-control-allow-headers"
-        - "x-xsrf-token"
+        - '*'
     # Enable Helm deployment integration
     releasesEnabled: true
     # Cache refresh interval in sec.

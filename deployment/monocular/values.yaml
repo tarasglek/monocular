@@ -31,9 +31,9 @@ api:
         url: http://storage.googleapis.com/kubernetes-charts-incubator
         source: https://github.com/kubernetes/charts/tree/master/incubator
       # Add your own repository
-      #- name: my-repo-name
-      #  url: my-repository-url
-      #  source: my-repository-source
+      - name: purestorage.com
+        url: http://dev-taras:8000
+        source: http://dev-taras:8000
     cors:
       allowed_origins:
         - my-api-server

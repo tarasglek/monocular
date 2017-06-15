@@ -4,7 +4,7 @@
 api:
   replicaCount: 1
   image:
-    repository: gcr.io/helm-ui/monocular-api
+    repository: tarasglek/monocular-api
     tag: latest
     pullPolicy: Always
   service:
@@ -48,7 +48,7 @@ api:
 ui:
   replicaCount: 1
   image:
-    repository: gcr.io/helm-ui/monocular-ui
+    repository: tarasglek/monocular-ui
     tag: latest
     pullPolicy: Always
   service:
